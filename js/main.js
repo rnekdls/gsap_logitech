@@ -663,4 +663,45 @@ window.addEventListener("DOMContentLoaded", function () {
 
   scrollMouse(".odd", -innerHeight);
   scrollMouse(".even", innerHeight);
+
+  // scroll move to each section
+  const sections = $("[data-idx]");
+
+  for (let i = 0; i < sections.length; i++) {
+    $(".indicators").append(`<span class="point-${i}"></span>`);
+
+    ScrollTrigger.create({
+      trigger: sections[i],
+      start: "top 50%",
+      end: "bottom 50%",
+      toggleClass: {
+        targets: `.point-${i}`, // 클래스를 추가할 대상
+        className: "current", // 추가할 클래스 이름
+      },
+
+      // markers: true,
+    });
+  }
+
+  $(".indicators span").click(function () {
+    const idx = $(this).index();
+    const sectionTop = sections[idx].offsetTop;
+
+    container.scrollTo(0, sectionTop, 600, {
+      easing: easing.easeInOutCirc, // 스크롤 이징 함수
+    });
+  });
+
+  const menuPositions = $("[menu-pos]");
+
+  $("[menu-list]").click(function () {
+    const idx = $(this).index();
+    const menuListTop = menuPositions[idx].offsetTop;
+
+    container.scrollTo(0, menuListTop, 600, {
+      easing: easing.easeInOutCirc,
+    });
+
+    $("#menu").fadeToggle().toggleClass("on");
+  });
 });
